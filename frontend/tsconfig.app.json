@@ -22,10 +22,10 @@
     "noUncheckedSideEffectImports": true,
 
     /* ShadCn Config */
-    "baseUrl": ".",
+    "baseUrl": "",
     "paths": {
       "@/*": [
-        "./src/*"
+        "src/*"
       ]
     }
   },

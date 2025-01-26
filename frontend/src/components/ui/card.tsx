@@ -2,19 +2,19 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 
 interface CardProps{
-  id:number;
+  slug:string;
   title:string;
   description:string;
   image:string;
 }
-export default function Card({id,title,description,image}:CardProps) {
+export default function Card({slug,title,description,image}:CardProps) {
   const handleError = () =>{
     console.log("Failed to load image:  ",image)
   }
   console.log(`REndered image; ${image}`)
   return (
     <>
-<Link to={`/detail/${id}`} className="card bg-base-100 w-96 shadow-xl h-96">
+<Link to={`/detail/${slug}`} className="card bg-base-100 w-96 shadow-xl h-96">
   <figure>
     <img
       src={image}

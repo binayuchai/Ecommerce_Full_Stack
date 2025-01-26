@@ -5,6 +5,7 @@ import axios from 'axios';
 
 //Defining a type for card data
 interface CardData{
+  slug:string;
   id:number;
   title:string;
   description:string;
@@ -44,7 +45,7 @@ export default function Home() {
   {cards.map((card) => (
     <div className="m-2" key={card.id}>
       <Card
-      id={card.id}
+       slug={card.slug}
         title={card.title}
         description={card.description}
         image={card.image}

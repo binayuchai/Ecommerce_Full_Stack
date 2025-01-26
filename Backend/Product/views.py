@@ -17,15 +17,15 @@ class ProductList(APIView):
 
 class ProductDetail(APIView):
     
-    def get_object(self,id):
+    def get_object(self,slug):
         try:
-            return Product.objects.get(id=id)         
+            return Product.objects.get(slug=slug)         
             
         except Product.DoesNotExist:
             raise Http404
     
-    def get(self,request,id):
-        product = self.get_object(id)
+    def get(self,request,slug):
+        product = self.get_object(slug)
         serializer = ProductSerializer(product,context={'request':request})
         return Response(serializer.data,status=status.HTTP_200_OK)
     
