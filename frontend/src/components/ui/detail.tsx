@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect,useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams,Link } from 'react-router-dom';
 
 
 interface DetailProps{
@@ -64,7 +64,7 @@ const [loading, setLoading] = useState(true);
     <div className="flex flex-col text-start">
     <h3 className='text-2xl'>{description}</h3>
     <h3 className='text-2xl'>Price :<span className='text-green-300'>${price}</span> </h3>
-    <button className="btn btn-primary mt-5 px-2" type="submit">Buy Now</button>
+    <Link className="btn btn-primary mt-5 px-2" type="submit" to="/cart/">Buy Now</Link>
     </div>
     </div>
 
