@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'Shopping',
+    'rest_framework_simplejwt',
 
 ]
 
@@ -124,9 +125,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static",
+# ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # used in production (after running collectstatic)
 
@@ -148,4 +149,17 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 
     
+]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+
+}
+
+AUTHENTICATION_BACKENDS = [
+    'user.authentication.EmailBackend',  # Custom Email Authentication
+    'django.contrib.auth.backends.ModelBackend',  # Default
 ]
