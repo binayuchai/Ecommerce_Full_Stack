@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'Shopping',
     'rest_framework_simplejwt',
+    'drf_yasg',
+
 
 ]
 
@@ -153,6 +155,8 @@ CORS_ALLOWED_ORIGINS = [
 
 
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )

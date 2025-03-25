@@ -14,7 +14,7 @@ export default function Card({slug,title,description,image}:CardProps) {
   console.log(`REndered image; ${image}`)
   return (
     <>
-<Link to={`/detail/${slug}`} className="card bg-base-100 w-96 shadow-xl h-96">
+<Link to={`/detail/${slug}/`} className="card bg-base-100 w-96 shadow-xl h-96">
   <figure>
     <img
       src={image}

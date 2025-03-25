@@ -6,13 +6,17 @@ import { createBrowserRouter, createRoutesFromElements,Route, RouterProvider } f
 import Home from './components/Home';
 import Detail from './components/ui/detail';
 import Cart from './components/Cart';
+import Login from './components/Login';
+import Register from './components/Register';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Root/>}>
-      <Route path="" element={<Home/>}/>
-      <Route path="/detail/:slug" element={<Detail/>}/>
-      <Route path="cart/" element={<Cart/>}/>
+      <Route path="/" element={<Home/>}/>
+      <Route path="/detail/:slug/" element={<Detail/>}/>
+      <Route path="/cart/" element={<Cart/>}/>
+      <Route path="/login/" element={<Login/>}/>
+      <Route path="/register/" element={<Register/>}/>
 
 
 

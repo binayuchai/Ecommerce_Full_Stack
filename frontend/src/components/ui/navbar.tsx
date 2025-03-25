@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export default function () {
@@ -25,7 +26,7 @@ export default function () {
                         <ul
                             tabIndex={0}
                             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                            <li><a>Home</a></li>
+                            <li><Link to="/">Home</Link></li>
                             {/* <li>
                                 <a>Parent</a>
                                 <ul className="p-2">
@@ -40,7 +41,7 @@ export default function () {
                 </div>
                 <div className="navbar hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">
-                        <li><a>Home</a></li>
+                        <li><Link to="/">Home</Link></li>
                         {/* <li>
                             <details>
                                 <summary>Parent</summary>
@@ -62,9 +63,9 @@ export default function () {
 
                 </div>
                 <div className="navbar-end flex-1">
-                    <a className="btn btn-success mr-2">Cart</a>
+                    <Link className="btn btn-success mr-2" to={"/cart"}>Cart</Link>
 
-                    <a className="btn btn-primary">Login</a>
+                    <Link className="btn btn-primary" to={"/login"}>Login</Link>
 
 
                 </div>
