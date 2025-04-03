@@ -1,28 +1,52 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function Register() {
+    const navigate = useNavigate();
+
     const [username, setUsername] = useState("");
     const [useremail, setUseremail] = useState("");
     const [password, setPassword] = useState("");
     const [cpassword, setCpassword] = useState("");
     const [error, setError] = useState("");
 
-    const handleSubmit = (e:React.FormEvent<HTMLFormElement>)=>{
+
+    const handleSubmit = async(e:React.FormEvent<HTMLFormElement>)=>{
          e.preventDefault();
          console.log(username,useremail,password,cpassword)
+ 
+         if(password !== cpassword){
+            setError("Passwords do not match");
+            return;
+         }
 
-        // try{
-        //     const response = axios.post("http://localhost:8000/api/register/",{name:username,})
+        try{
+            setError("");
+            const response = await axios.post("http://localhost:8000/api/register/",{name:username,email:useremail,password:password},{
+                headers:{
+                    'Content-Type':'application/json'
+                }
+            })
+            console.log(response);
+            localStorage.clear();
+            localStorage.setItem('access_token',response.data.token['access']);
+            localStorage.setItem('refresh_token',response.data.token['refresh']);
+            navigate('/');
 
-        // }catch(error){
-        //     if (axios.isAxiosError(error) && error.response) {
-        //     console.log('Error during registration',error.response.data);
-        // }else{
-        //     console.log('Error',error);
-        // 
+        }catch(error){
+            if (axios.isAxiosError(error) && error.response) {
+            console.log('Error during registration',error.response.data);
+            const errorMessage = Object.values(error.response.data.error).flat().join(" ");
+            setError(errorMessage);
+
+        
+            // setError(error.response.data);
+
         }
-    
+        }
+
+    }
 
   return (
     <>
@@ -57,6 +81,7 @@ export default function Register() {
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                       Have an account? <a href="/login" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Login</a>
                   </p>
+                  {error ? <p className="text-red-500 text-sm">{error}</p> : ""}
               </form>
           </div>
       </div>
@@ -67,7 +92,4 @@ export default function Register() {
 
 }
 
-function handleSubmit() {
-    throw new Error('Function not implemented.');
-}
 

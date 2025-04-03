@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
@@ -8,6 +8,12 @@ export default function Login() {
     const [password, SetPassword] = useState('');
     const [isAuth, SetIsAuth] = useState(false);
     const [error, SetError] = useState('');
+
+    useEffect(()=>{
+        if(localStorage.getItem('access_token')){
+            SetIsAuth(true);
+        }
+    },[isAuth])
  const handleSubmit = async(e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     const form = e.target as HTMLFormElement;

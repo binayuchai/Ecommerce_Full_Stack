@@ -67,5 +67,8 @@ class MyUser(AbstractBaseUser,PermissionsMixin):
         "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
         return True
+    
+    class Meta:
+        verbose_name = "User"
 
  

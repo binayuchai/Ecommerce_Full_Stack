@@ -13,6 +13,8 @@ class UserSerializer(serializers.ModelSerializer):
             'password':{'write_only':True}
         }
         
+        
+        
     def create(self,validated_data):
         user = User(email=validated_data['email'],name=validated_data['name'])
         #hash the password

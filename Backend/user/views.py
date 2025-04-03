@@ -5,6 +5,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
+from user.renderers import UserJSONRenderer
+
 #create token manually
 def get_token_for_user(user):
     refresh = RefreshToken.for_user(user)
@@ -13,7 +15,9 @@ def get_token_for_user(user):
         'refresh':str(refresh),
         'access':str(refresh.access_token),
     }
+    
 class UserRegisterView(APIView):
+    renderer_classes = [UserJSONRenderer]
     def post(self,request,format=None):
         serializer = UserSerializer(data=request.data)
         print("Serializer: ",serializer)
@@ -23,11 +27,16 @@ class UserRegisterView(APIView):
             user = serializer.save()
             token = get_token_for_user(user)
             return Response({'token':token,'message':'Registration successful'},status=status.HTTP_201_CREATED)
-        
+        else:
+            print(serializer.errors['email'])
+            print(type(serializer.errors['email']))
+
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)   
     
 
 class UserLoginView(APIView):
+    renderer_classes = [UserJSONRenderer]
+
     def post(self,request,format=None):
         serializer = LoginSerializer(data=request.data)
         
