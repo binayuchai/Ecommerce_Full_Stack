@@ -1,8 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import { useAuth } from '../AuthContext';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export default function () {
+    const { user, logout } = useAuth();
     return (
         <>
 
@@ -64,8 +66,21 @@ export default function () {
                 </div>
                 <div className="navbar-end flex-1">
                     <Link className="btn btn-success mr-2" to={"/cart"}>Cart</Link>
+{
 
-                    <Link className="btn btn-primary" to={"/login"}>Login</Link>
+    user?(
+        <div className='flex'>
+  <span className="text-sm">{user.name}</span>
+  <button className="btn btn-primary" onClick={logout}>Logout</button>
+
+        </div>
+      
+    ):(
+
+        <Link className="btn btn-primary" to={"/login"}>Login</Link>
+
+    )
+}
 
 
                 </div>

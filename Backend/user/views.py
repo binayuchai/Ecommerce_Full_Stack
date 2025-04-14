@@ -6,6 +6,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from user.renderers import UserJSONRenderer
+from rest_framework.decorators import api_view
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.decorators import permission_classes
 
 #create token manually
 def get_token_for_user(user):
@@ -16,6 +19,17 @@ def get_token_for_user(user):
         'access':str(refresh.access_token),
     }
     
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def current_user(request):
+    user = request.user
+    return Response({
+        "id":user.id,
+        "email":user.email,
+        "name":user.name,
+    })
+
 class UserRegisterView(APIView):
     renderer_classes = [UserJSONRenderer]
     def post(self,request,format=None):
@@ -51,9 +65,10 @@ class UserLoginView(APIView):
             print(user)
             if user is not None:
                 token = get_token_for_user(user)
-                return Response({'token':token,'message':'Login Successful'},status=status.HTTP_200_OK)
+                return Response({'token':token,'user':LoginSerializer(user).data,'message':'Login Successful'},status=status.HTTP_200_OK)
             else:
                 return Response({'message':'Email or Password is not valid'},status=status.HTTP_404_NOT_FOUND)
             
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)   
+    
             
