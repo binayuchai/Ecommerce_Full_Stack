@@ -1,9 +1,9 @@
 from django.urls import path
-# from .views import CartView
+from .views import AddToCartView
 app_name="shopping"
 urlpatterns = [
-    # path("api-cart-list/",CartView.as_view(),name="cart-list"),
-#     path("api-cart-item/",CartItemList.as_view(),name="cart-item"),
+    path("api-cart-add/",AddToCartView.as_view(),name="cart-list"),
+    # path("api-cart-item/",CartItemList.as_view(),name="cart-item"),
     
     
  ]
