@@ -2,7 +2,7 @@ from django.db import models
 from Product.models import Product,TimeStampModel
 from user.models import MyUser as User
 import uuid
-from decimal import Decimal
+from decimal import ROUND_HALF_UP, Decimal
 
 # Create your models here.
 
@@ -25,8 +25,8 @@ class Cart(TimeStampModel):
         
         total = sum(item.total_price for item in self.items.all())
         print("Total before discount:", total)
-        discount_amount = Decimal(total) * (self.discount / Decimal("100"))
-        self.amount =total - discount_amount
+        discount_amount =total * (self.discount / 100)
+        self.amount =(total - discount_amount).quantize(Decimal("0.01"),rounding=ROUND_HALF_UP)
         return self.amount
     
     

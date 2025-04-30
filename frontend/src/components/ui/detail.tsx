@@ -1,13 +1,18 @@
 import axios from 'axios';
 import React, { useEffect,useState } from 'react'
 import { useParams,Link } from 'react-router-dom';
-
+import { useAuth } from '../AuthContext';
 
 interface DetailProps{
     name:string;
     description:string;
     image:string;
     price:number;
+    id:number;
+    
+}
+interface CartProps{
+    quantity:number;
 }
 
 
@@ -21,6 +26,8 @@ const [name, setTitle] = useState("");
 const [description, setDescription] = useState("");
 const [image, setImage] = useState("");
 const [price, setPrice] = useState(0);
+const [quantity, setQuantity] = useState(1);
+const [productid, setProductId] = useState(0);
 const [loading, setLoading] = useState(true);
     const { slug } = useParams<RouteParams>();
 
@@ -32,6 +39,7 @@ const [loading, setLoading] = useState(true);
             setDescription(response.data.description);
             setImage(response.data.image);
             setPrice(response.data.price);
+            setProductId(response.data.id);
 
 
         }catch(err){
@@ -41,6 +49,53 @@ const [loading, setLoading] = useState(true);
         }finally {
             setLoading(false); // Set loading to false after fetching
         }
+    }
+
+    const authContext = useAuth();
+    const accessToken = authContext?authContext.accessToken : undefined;
+
+
+    // Call Add to Cart API through this function
+    const handleAddToCart = async()=>{
+
+        console.log("Quantity selected: ", quantity);
+        console.log("Product ID: ", productid);
+        // Add to cart API call
+        
+        try{
+            
+            const response = await axios.post(`http://127.0.0.1:8000/api-cart-add/`,{
+            'quantity':quantity,
+            'product_id':productid
+        },{
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+
+            }
+        })
+        setQuantity(1);
+        
+        console.log("response is : ",response);
+        if(response.status === 200){
+            console.log("Added to cart successfully");
+        }
+        else{
+            console.log("Failed to add to cart");
+        }
+
+
+    }catch(err){
+        const error = err as Error;
+        console.log(error);
+        console.log("Failed to add to cart");
+
+    }
+
+
+
+        
+
     }
     useEffect(()=>{
         fetchDetail();
@@ -64,7 +119,21 @@ const [loading, setLoading] = useState(true);
     <div className="flex flex-col text-start">
     <h3 className='text-2xl'>{description}</h3>
     <h3 className='text-2xl'>Price :<span className='text-green-300'>${price}</span> </h3>
-    <Link className="btn btn-primary mt-5 px-2" type="submit" to="/cart/">Buy Now</Link>
+    <h3 className='text-1xl my-5'>Quantity</h3>
+    <select value={quantity} onChange={e=> setQuantity(parseInt(e.target.value))} className="select my-3">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+    <option value="10">10</option>
+
+    </select>
+    <button className="btn btn-warning mt-5 px-2" type="submit" onClick={handleAddToCart}>Add to Cart</button>
     </div>
     </div>
 
