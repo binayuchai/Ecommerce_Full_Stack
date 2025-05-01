@@ -1,10 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
-
+import user_pic from '../../assets/user.png';
 // eslint-disable-next-line react-refresh/only-export-components
 export default function () {
     const { user, logout } = useAuth();
+    console.log("User in first navbar", user);
     return (
         <>
 
@@ -70,14 +71,22 @@ export default function () {
 
     user?(
         <div className='flex'>
-  <span className="text-sm">{user.name}</span>
+  {/* <span className="text-sm">{user?user.name:undefined}</span> */}
+  {/* <button className="btn btn-primary" onClick={logout}>Logout</button> */}
+  <div className="dropdown dropdown-start">
+  <div tabIndex={0} role="button" className="btn m-1"><img src={user_pic} alt="user" className='w-10 h-10 rounded-full mr-2' />
+  </div>
+  <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
   <button className="btn btn-primary" onClick={logout}>Logout</button>
+  <li><a>Item 2</a></li>
+  </ul>
+</div>
 
         </div>
       
     ):(
 
-        <Link className="btn btn-primary" to={"/login"}>Login</Link>
+        <Link className="btn btn-primary" to="/login">Login</Link>
 
     )
 }

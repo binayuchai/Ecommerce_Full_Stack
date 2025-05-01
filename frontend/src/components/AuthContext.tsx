@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 type User = {
     id:number;
     email:string;
+    name:string;
 }
 type AuthContextType = {
     accessToken: string;
@@ -32,7 +33,24 @@ export const  AuthProvider =({children}:AuthProviderProps)=>{
 
     const [accessToken, setAccessToken] = useState<string>('');
     const [user, setUser] = useState<User | null>(null);
-
+   //get user data from the server
+   const fetchUser = async (storedToken:string) => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/user/', {
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
+      });
+      console.log('User data', response);
+      setUser(response.data);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        console.log('Failed to fetch', error.response);
+      } else {
+        console.error('Unexpected error', error);
+      }
+    }
+  };
     const login  = async(email:string,password:string)=>{
         
         try{
@@ -41,13 +59,17 @@ export const  AuthProvider =({children}:AuthProviderProps)=>{
             setAccessToken(response.data.token['access']);
             setUser(response.data.user);
             console.log("Full response:", response);
-console.log("Response data:", response.data);
-console.log("Token:", response.data.token);
-console.log("User:", response.data.user);
+            console.log("Response data:", response.data);
+            console.log("Token:", response.data.token);
+            console.log("User:", response.data.user);
+            console.log("logged in user", response.data.user);
 
 
         localStorage.setItem('access_token', response.data.token['access']);
         localStorage.setItem('refresh_token', response.data.token['refresh']);
+         console.log("Access token", accessToken);
+        await fetchUser(response.data.token['access']);
+
             navigate('/');
 
 
@@ -78,26 +100,13 @@ console.log("User:", response.data.user);
 
     if(storedToken){   
         setAccessToken(storedToken);
+        fetchUser(storedToken);
     }
-    //get user data from the server
-    const fetchUser = async () => {
-        try {
-          const response = await axios.get('http://localhost:8000/api/user/', {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-            },
-          });
-          console.log('User data', response);
-          setUser(response.data);
-        } catch (error) {
-          if (axios.isAxiosError(error) && error.response) {
-            console.log('Failed to fetch', error.response);
-          } else {
-            console.error('Unexpected error', error);
-          }
-        }
-      };
-        fetchUser();
+    //fetch user data if token is present
+    console.log("Stored token", storedToken);
+
+
+ 
    
 
     },[])
