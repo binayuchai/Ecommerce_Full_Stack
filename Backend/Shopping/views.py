@@ -5,8 +5,10 @@ from .serializers import CartSerializer,CartItemSerializer
 from .models import Cart,CartItem,Product
 from .models import User
 from rest_framework import status
-
+from rest_framework.permissions import IsAuthenticated
+from django.http import Http404
 from rest_framework.response import Response
+
 # class CartList(generics.ListCreateAPIView):
 #     queryset = Cart.objects.all()
 #     serializer_class = CartSerializer
@@ -76,7 +78,16 @@ class AddToCartView(APIView):
 
     
 
-
+class CartItemList(APIView):
+    
+    permission_classes = [IsAuthenticated]
+    
+    
+    def get(self,request,format=None):
+        cart = Cart.objects.get(owner=request.user,is_checked_out=False)
+        cart_items = CartItem.objects.filter(cart=cart)
+        serializer = CartItemSerializer(cart_items,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
     
     
     

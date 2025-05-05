@@ -78,9 +78,11 @@ export const  AuthProvider =({children}:AuthProviderProps)=>{
         }catch(error){
             if(axios.isAxiosError(error) && error.response){
                 console.log("Login error ", error.response);
+                throw error;
             }
             else{
                 console.error("Unexpected error",error);
+                throw new Error("An unexpected error occurred");
             }
     
             }

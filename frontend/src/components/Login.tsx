@@ -1,10 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 
 export default function Login() {
-    const navigate = useNavigate();
     const [email, SetEmail] = useState('');
     const [password, SetPassword] = useState('');
     const [isAuth, SetIsAuth] = useState(false);
@@ -21,11 +20,28 @@ export default function Login() {
     const form = e.target as HTMLFormElement;
     const email = (form.elements.namedItem('email') as HTMLInputElement).value;
     const password = (form.elements.namedItem('password') as HTMLInputElement).value;
-    console.log(email,password)
    
+    console.log(email,password)
+    try {
+        await login(email,password);
 
-    login(email,password);
+    } catch (error) {
+        console.log("Error in login 1");
+        let errorMessage = "Login failed.Please try again.";
+        if(axios.isAxiosError(error) && error.response){
+            errorMessage = error.response.data.message;
+            console.log("Login error",errorMessage);
+        }
+        SetError(errorMessage);
+        console.log("Login error",error);
+    }
+
+
+
+
+    
  }
+ console.log("Error in login component",error);
   return (
     
 <section className=" dark:bg-gray-900">
@@ -53,7 +69,14 @@ export default function Login() {
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                       Don’t have an account yet? <Link to="/register" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</Link>
                   </p>
+
+
               </form>
+              {error && <div className="toast">
+  <div className="alert alert-error">
+    <span>{error}</span>
+  </div>
+</div>}
           </div>
       </div>
   </div>

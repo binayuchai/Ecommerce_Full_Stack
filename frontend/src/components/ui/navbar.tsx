@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
-import user_pic from '../../assets/user.png';
+import user_pic from '../../assets/user.svg';
 // eslint-disable-next-line react-refresh/only-export-components
 export default function () {
     const { user, logout } = useAuth();
@@ -65,7 +65,7 @@ export default function () {
                 <div className="navbar-center">
 
                 </div>
-                <div className="navbar-end flex-1">
+                <div className="navbar-end flex">
                     <Link className="btn btn-success mr-2" to={"/cart"}>Cart</Link>
 {
 
@@ -76,9 +76,8 @@ export default function () {
   <div className="dropdown dropdown-start">
   <div tabIndex={0} role="button" className="btn m-1"><img src={user_pic} alt="user" className='w-10 h-10 rounded-full mr-2' />
   </div>
-  <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+  <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm text-left">
   <button className="btn btn-primary" onClick={logout}>Logout</button>
-  <li><a>Item 2</a></li>
   </ul>
 </div>
 

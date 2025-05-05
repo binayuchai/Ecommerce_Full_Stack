@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" id="user">
+  <g transform="translate(0 -1026.362)">
+    <circle cx="13" cy="1039.362" r="13" fill="#424242" fill-rule="evenodd"></circle>
+    <path fill="#fff" d="M8 0C5.793 0 4 1.793 4 4v1a.5.5 0 0 0 .002.045c.061.694.206 1.295.559 1.842.305.473.822.885 1.439 1.324l.004 1.049c-1.83.515-3.573 1.54-4.897 3.21a.5.5 0 0 0-.107.311V15.5a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-2.719a.5.5 0 0 0-.11-.31c-.23-.291-.49-.59-.755-.856-1.207-1.207-2.641-1.94-4.13-2.36l-.003-1.034c.617-.427 1.144-.814 1.47-1.284C11.85 6.397 12 5.761 12 5V4c0-2.207-1.793-4-4-4Zm0 1c1.67 0 3 1.33 3 3v1c0 .643-.099 1.01-.348 1.367-.249.358-.696.728-1.43 1.217a.5.5 0 0 0-.222.42l.008 1.434L8 9.94l-.996-.498L7 8a.5.5 0 0 0-.223-.416c-.722-.481-1.133-.861-1.377-1.238-.242-.376-.346-.775-.4-1.383V4c0-1.67 1.33-3 3-3Zm-1.762 9.178 1.262.633V13.5h1v-2.69l1.242-.623c1.337.376 2.604 1.053 3.686 2.135.194.194.388.425.572.649V15H2v-2.004c1.172-1.43 2.657-2.365 4.238-2.818z" color="#000" font-family="sans-serif" font-weight="400" overflow="visible" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;isolation:auto;mix-blend-mode:normal" transform="translate(5 1030.362)"></path>
+  </g>
+</svg>
