@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import axios from 'axios';
 import { useAuth } from './AuthContext';
 function Cart() {
@@ -12,8 +12,10 @@ function Cart() {
     id:number;
     product:Product;
     quantity:number;
+    amount:number;
   }
   const auth = useAuth();
+  const isAuthenticated = auth?.isAuthenticated;
   const accessToken = auth?.accessToken;
   console.log("Access token in cart",accessToken);
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -69,6 +71,7 @@ function Cart() {
       },
     });
 
+
     }catch(error){
       if(axios.isAxiosError(error)){
         console.log("Error: ",error.message);
@@ -80,20 +83,27 @@ function Cart() {
     setCart(cart.filter(item=>item.id !== id));
   }
 
+  const total_amt = useMemo(()=>{
+    return cart.reduce((sum,item)=>sum + item.product.price * item.quantity,0)
+  },[cart])
+
 
 useEffect(() => {
   const fetchCartItems = async () => {
     try {
+      console.log("Before Access token in cart",accessToken);
       const response = await axios.get(('http://localhost:8000/api-cart-item/'), {
         headers: {
           'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         }
       });
-      setCart(response.data);
-      console.log("cart items", cart);
-      console.log("Response in cart items", response);
-      console.log("Cart items", response.data);
+      console.log("After Api hit token in cart",accessToken);
+
+      setCart(response.data.cart_items);
+      console.log("Cart amount",cart );
+      console.log("Cart items fetched", response.data.cart_items);
+
     } catch (error) {
       console.log("Error in fetching cart items why");
       if (axios.isAxiosError(error) && error.response) {
@@ -101,7 +111,11 @@ useEffect(() => {
       }
     }
   };
+  
+  if(isAuthenticated){
   fetchCartItems();
+
+   }
 }, [accessToken]);
   return (
     <>
@@ -125,10 +139,9 @@ useEffect(() => {
               </div>
             </div>
           ))}
-          {/* <div className="text-right font-bold text-xl mt-6">
-            Total: ${total.toFixed(2)}
-            total
-          </div> */}
+          <div className="text-right font-bold text-xl mt-6">
+            Total: ${total_amt}
+          </div>
         </div>
       )}
     </div>

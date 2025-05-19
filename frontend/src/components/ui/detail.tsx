@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { useEffect,useState } from 'react'
-import { useParams,Link } from 'react-router-dom';
+import { useParams,Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
+import api from './auth/api';
 
 interface DetailProps{
     name:string;
@@ -22,6 +23,7 @@ interface RouteParams extends Record<string, string | undefined> {
 }
 const Detail = ()=>{
 
+
 const [name, setTitle] = useState("");
 const [description, setDescription] = useState("");
 const [image, setImage] = useState("");
@@ -29,6 +31,9 @@ const [price, setPrice] = useState(0);
 const [quantity, setQuantity] = useState(1);
 const [productid, setProductId] = useState(0);
 const [loading, setLoading] = useState(true);
+const[notification,setNotification] = useState(false);
+const navigate = useNavigate();
+
     const { slug } = useParams<RouteParams>();
 
     const fetchDetail = async()=>{
@@ -60,11 +65,18 @@ const [loading, setLoading] = useState(true);
 
         console.log("Quantity selected: ", quantity);
         console.log("Product ID: ", productid);
+        console.log("Access token: ", accessToken);
+        if(!accessToken){
+            console.log("Access token not found");
+            navigate('/login');
+            return;
+        }
+        
         // Add to cart API call
         
         try{
             
-            const response = await axios.post(`http://127.0.0.1:8000/api-cart-add/`,{
+            const response = await api.post(`/api-cart-add/`,{
             'quantity':quantity,
             'product_id':productid
         },{
@@ -75,10 +87,16 @@ const [loading, setLoading] = useState(true);
             }
         })
         setQuantity(1);
+              
         
         console.log("response is : ",response);
         if(response.status === 200){
             console.log("Added to cart successfully");
+            setNotification(true);
+            setTimeout(() => {
+                setNotification(false);
+            }
+            , 2000);
         }
         else{
             console.log("Failed to add to cart");
@@ -105,8 +123,13 @@ const [loading, setLoading] = useState(true);
         return <div>Loading...</div>;
     }
   return (
-    <>
-
+    <>         {notification && 
+                <div role="alert" className="alert alert-success">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>Your purchase has been confirmed!</span>
+                </div>}
     <div className="container flex flex-col items-start">
 
     <h2 className='text-3xl capitalize'>{name}</h2>

@@ -3,6 +3,7 @@ import { create } from "node_modules/axios/index.d.cts";
 
 import React, { useState,createContext,useContext, useEffect} from 'react'
 import { useNavigate } from "react-router-dom";
+import api, { setLogoutCallBack } from "./ui/auth/api";
 
 
 type User = {
@@ -36,7 +37,7 @@ export const  AuthProvider =({children}:AuthProviderProps)=>{
    //get user data from the server
    const fetchUser = async (storedToken:string) => {
     try {
-      const response = await axios.get('http://localhost:8000/api/user/', {
+      const response = await api.get('/api/user/', {
         headers: {
           Authorization: `Bearer ${storedToken}`,
         },
@@ -54,7 +55,7 @@ export const  AuthProvider =({children}:AuthProviderProps)=>{
     const login  = async(email:string,password:string)=>{
         
         try{
-            const response = await axios.post('http://localhost:8000/api/login/',{email,password});
+            const response = await api.post('/api/login/',{email,password});
             console.log("This is response:" + response.status);
             setAccessToken(response.data.token['access']);
             setUser(response.data.user);
@@ -97,6 +98,7 @@ export const  AuthProvider =({children}:AuthProviderProps)=>{
     }
 
     useEffect(()=>{
+      setLogoutCallBack(logout);
         const storedToken = localStorage.getItem('access_token');
 
 

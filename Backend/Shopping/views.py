@@ -98,7 +98,11 @@ class CartItemList(APIView):
         cart = Cart.objects.get(owner=request.user,is_checked_out=False)
         cart_items = CartItem.objects.filter(cart=cart)
         serializer = CartItemSerializer(cart_items,many=True)
-        return Response(serializer.data,status=status.HTTP_200_OK)
+        context = {
+            "cart_items":serializer.data,
+            "total_amount":cart.amount,
+        }
+        return Response(context,status=status.HTTP_200_OK)
     
     
 
